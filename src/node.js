@@ -41,22 +41,45 @@ class Node {
 	}
 
 	swapWithParent() {
-			if (this.parent == null) {
-			return;
-		} else {
-			const parent = this.parent
-			const parentOfParent = parent.parent;
+		if (this.parent) {
+			const parent = this.parent;
+			const left = this.left;
+			const right = this.right;
+			const parentOfParent = this.parent.parent;
+			
 			this.parent = parentOfParent;
 			parent.parent = this;
-
-			if (parent.left && parent.left !== this) {
-				parent.left.parent = this;
+			
+			if (parent.right === this) {
+			this.right = parent;
+			this.left = parent.left;
+			if (this.left)
+			this.left.parent = this;
 			}
-
-			if (parent.right && parent.right !== this) {
-				parent.right.parent = this;
+			
+			if (parent.left === this) {
+			this.left = parent;
+			this.right = parent.right;
+			if (this.right)
+			this.right.parent = this;
 			}
-
+			
+			parent.left = left;
+			parent.right = right;
+			
+			if (left)
+			left.parent = parent;
+			
+			if (right)
+			right.parent = parent;
+			
+			if (parentOfParent && parentOfParent.left == parent) {
+			parentOfParent.left = this;
+			}
+			
+			if (parentOfParent && parentOfParent.right == parent) {
+			parentOfParent.right = this;
+			}
 			
 		}
 	
